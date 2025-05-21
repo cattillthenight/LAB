@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * S05 - Analyze the user input string.
@@ -54,45 +59,31 @@ public class AnalysisString {
      * @param input All characters that exist on the operating system
      */
     public void getNumber(String input) {
-        HashMap<String, List<Integer>> result = new HashMap<>();
-        List<Integer> squareNumbers = new ArrayList<>();
-        List<Integer> oddNumbers = new ArrayList<>();
-        List<Integer> evenNumbers = new ArrayList<>();
-        List<Integer> allNumbers = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(input);
 
-        String current = ""; // Temporary variable used to store consecutive number series
-        String sentinal = input + " "; // Create a flag variable to ensure the last number is handled correctly
+        List<Integer> allNumbers = matcher.results()
+            .map(MatchResult::group)
+            .map(Integer::parseInt)
+            .collect(Collectors.toList());
+        
+        List<Integer> oddNumbers = allNumbers.stream()
+            .filter(n -> n % 2 != 0)
+            .collect(Collectors.toList());
 
-        for (int i = 0; i < sentinal.length(); i++) { // Iterate through each character in the string
-            char ch = sentinal.charAt(i); // Get each character at position i
-            if (Character.isDigit(ch)) { // Check if the current character is a digit
-                current += ch; // Add digits to temporary string current
-            } else { // If a non-numeric character is encountered then start a new string
-                if (!current.isEmpty()) { // If the current string is not empty
-                    int number = Integer.parseInt(current); // Convert string to int type
-                    allNumbers.add(number); // Add all numbers to the list
-                    if (number % 2 == 0) { // Check if the number is even
-                        evenNumbers.add(number); // Add even numbers to the list
-                    } else { // If it is odd numbers
-                        oddNumbers.add(number); // Add to odd number list
-                    }
-                    if (Math.sqrt(number) == (int) Math.sqrt(number)) { // Check if the number is a perfect square
-                        squareNumbers.add(number); // Add to square number list
-                    }
-                    current = ""; // Reset the current string to prepare for the next number string
-                }
-            }
-        }
+        List<Integer> evenNumbers = allNumbers.stream()
+            .filter(n -> n % 2 == 0)
+            .collect(Collectors.toList());
+        
+        List<Integer> squareNumbers = allNumbers.stream()
+            .filter(n -> Math.sqrt(n) == (int) Math.sqrt(n))
+            .collect(Collectors.toList());
 
-        result.put("Square Numbers", squareNumbers);
-        result.put("Odd Numbers", oddNumbers);
-        result.put("Even Numbers", evenNumbers);
-        result.put("All Numbers", allNumbers);
 
-        System.out.println("Square Numbers: " + result.get("Square Numbers"));
-        System.out.println("Odd Numbers: " + result.get("Odd Numbers"));
-        System.out.println("Even Numbers: " + result.get("Even Numbers"));
-        System.out.println("All Numbers: " + result.get("All Numbers"));
+        System.out.println("Square Numbers: " + squareNumbers);
+        System.out.println("Odd Numbers: " + oddNumbers);
+        System.out.println("Even Numbers: " + evenNumbers);
+        System.out.println("All Numbers: " + allNumbers);
     }
 
     /**
