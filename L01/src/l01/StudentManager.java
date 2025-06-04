@@ -78,7 +78,7 @@ public class StudentManager {
         while (true) {
             String search = ce.inputSearch().toLowerCase().trim();
             for (Student s : students) {
-                if (s.getId().toLowerCase().contains(search) || s.getNameCourse().toLowerCase().contains(search)) {
+                if (s.getId().toLowerCase().contains(search) || s.getNameStudent().toLowerCase().contains(search)) {
                     sortTable.add(s);
                 }
             }
