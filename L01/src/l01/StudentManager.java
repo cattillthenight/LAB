@@ -5,7 +5,6 @@
  */
 package l01;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,7 +49,8 @@ public class StudentManager {
                     if (!checkSemester(semester, id)) {
                         String course = ce.inputNameCourse();
                         if (browserStudent(id, semester, course)) {
-                            System.out.println("This ID has registered this " + course + " in the semester:" + semester);
+                            System.out
+                                    .println("This ID has registered this " + course + " in the semester:" + semester);
                             System.out.println("Please enter again!");
                         } else {
                             students.add(new Student(id, name, semester, course));
@@ -86,13 +86,14 @@ public class StudentManager {
                 System.out.println("No name found! Please search again.");
                 continue;
             }
-            Collections.sort(sortTable, Comparator.comparing(Student::getNameStudent));
+            Collections.sort(sortTable, new StudentComparator());
             int index = 1;
             System.out.printf("------------------- List after search and sort ------------------\n"
                     + "|%-5s|%-10s|%-25s|%-10s|%-9s|\n", "No.", "ID", "Name", "Semester", "Course");
             System.out.println("-----------------------------------------------------------------");
             for (Student s : sortTable) {
-                System.out.printf("|%5d|%-10s|%-25s|%-10s|%-9s|\n", index++, s.getId(), s.getNameStudent(), s.getSemester(), s.getNameCourse());
+                System.out.printf("|%5d|%-10s|%-25s|%-10s|%-9s|\n", index++, s.getId(), s.getNameStudent(),
+                        s.getSemester(), s.getNameCourse());
             }
             System.out.println("+-----+----------+-------------------------+----------+---------+");
             return;
@@ -124,7 +125,8 @@ public class StudentManager {
                             if (!checkSemester(semester, id)) {
                                 String course = ce.inputNameCourse();
                                 if (browserStudent(id, semester, course)) {
-                                    System.out.println("This ID has registered this " + course + " in the semester:" + semester);
+                                    System.out.println(
+                                            "This ID has registered this " + course + " in the semester:" + semester);
                                     System.out.println("Please enter again!");
                                 } else {
                                     s.setSemester(semester);
@@ -133,7 +135,8 @@ public class StudentManager {
                                     break;
                                 }
                             } else {
-                                System.out.println("Signed up all the course of this semester, please select another semester.");
+                                System.out.println(
+                                        "Signed up all the course of this semester, please select another semester.");
                             }
                         }
                     } else if (choice.equalsIgnoreCase("D")) {
@@ -172,8 +175,9 @@ public class StudentManager {
      *
      * @param id The ID of the student to search for.
      * @return A string containing the index(es) of the student in the list,
-     * separated by spaces if multiple matches exist. Returns {@code null} if no
-     * student with the given ID is found.
+     *         separated by spaces if multiple matches exist. Returns {@code null}
+     *         if no
+     *         student with the given ID is found.
      */
     public String searchStudent(String id) {
         StringBuilder reIndex = new StringBuilder();
@@ -182,7 +186,9 @@ public class StudentManager {
         System.out.println("-----------------------------------------------------------------");
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).getId().equalsIgnoreCase(id)) {
-                System.out.printf("|%5d|%-10s|%-25s|%-10s|%-9s|\n", (i + 1), students.get(i).getId(), students.get(i).getNameStudent(), students.get(i).getSemester(), students.get(i).getNameCourse());
+                System.out.printf("|%5d|%-10s|%-25s|%-10s|%-9s|\n", (i + 1), students.get(i).getId(),
+                        students.get(i).getNameStudent(), students.get(i).getSemester(),
+                        students.get(i).getNameCourse());
                 reIndex.append(i).append(" ");
             }
         }
@@ -198,9 +204,10 @@ public class StudentManager {
      * to 1. This method prevents duplicate records from being added.
      *
      * @param count The trigger value to determine if students should be added.
-     * - If count == 1, the method populates the list with 10 students.
-     * Otherwise, it displays a message indicating that the records already
-     * exist.
+     *              - If count == 1, the method populates the list with 10 students.
+     *              Otherwise, it displays a message indicating that the records
+     *              already
+     *              exist.
      */
     public void recordStudent(int count) {
         students.add(new Student("SE190111", "Nguyen Van A", "FA24", "Java"));
@@ -226,7 +233,8 @@ public class StudentManager {
                 + "|%-5s|%-10s|%-25s|%-10s|%-9s|\n", "No.", "ID", "Name", "Semester", "Course");
         System.out.println("-----------------------------------------------------------------");
         for (Student s : students) {
-            System.out.printf("|%5d|%-10s|%-25s|%-10s|%-9s|\n", index++, s.getId(), s.getNameStudent(), s.getSemester(), s.getNameCourse());
+            System.out.printf("|%5d|%-10s|%-25s|%-10s|%-9s|\n", index++, s.getId(), s.getNameStudent(), s.getSemester(),
+                    s.getNameCourse());
         }
         System.out.println("+-----+----------+-------------------------+----------+---------+");
     }
@@ -247,7 +255,8 @@ public class StudentManager {
         System.out.println("+-----+----------+---------------------------+--------+----------------+");
         int index = 1;
         for (Map.Entry<String, Integer> entry : courseCount.entrySet()) {
-            System.out.printf("| %3d |%-10s| %-25s | %-6s |          %5d|%n", index++, entry.getKey().split(" - ")[0], entry.getKey().split(" - ")[1], entry.getKey().split(" - ")[2], entry.getValue());
+            System.out.printf("| %3d |%-10s| %-25s | %-6s |          %5d|%n", index++, entry.getKey().split(" - ")[0],
+                    entry.getKey().split(" - ")[1], entry.getKey().split(" - ")[2], entry.getValue());
         }
         System.out.println("+-----+----------+---------------------------+--------+----------------+");
     }
@@ -256,11 +265,11 @@ public class StudentManager {
      * Checks if a student with the given ID, semester, and course already
      * exists in the list.
      *
-     * @param id The student's ID.
+     * @param id       The student's ID.
      * @param semester The semester as an integer.
-     * @param course The course name.
+     * @param course   The course name.
      * @return true if a student with the same ID, semester, and course exists;
-     * otherwise, false.
+     *         otherwise, false.
      */
     public boolean browserStudent(String id, String semester, String course) {
         for (Student s : students) {
@@ -276,7 +285,7 @@ public class StudentManager {
      * given semester.
      *
      * @param semester The semester to check.
-     * @param id The student ID registers that semester.
+     * @param id       The student ID registers that semester.
      * @return true if all three courses exist in the semester, false otherwise.
      */
     public boolean checkSemester(String semester, String id) {
@@ -319,7 +328,7 @@ public class StudentManager {
      * Check whether the student list is empty or not.
      *
      * @return True if the list of empty students, on the contrary, returns
-     * False.
+     *         False.
      */
     public boolean checkIsEmpty() {
         return students.isEmpty();
